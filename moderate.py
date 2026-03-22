@@ -22,7 +22,7 @@ def initialize_agent():
 
     if provider == "google_genai":
         model = "google_genai:gemini-3-flash-preview"
-    else:
+    elif provider == "openai":
         model = "gpt-5-mini"
 
     return create_agent(model)
