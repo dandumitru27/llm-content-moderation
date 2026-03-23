@@ -18,12 +18,11 @@ def initialize_agent():
     else:
         load_dotenv()
 
-    provider = "google_genai"  # "google_genai" / "openai"
+    # "google_genai:gemini-3-flash-preview"
+    # "gpt-5-mini" / "gpt-5-nano"
+    model = "gpt-5-nano"
 
-    if provider == "google_genai":
-        model = "google_genai:gemini-3-flash-preview"
-    elif provider == "openai":
-        model = "gpt-5-mini"
+    print(f"Using model: {model}")
 
     return create_agent(model)
 
@@ -51,7 +50,7 @@ def moderate_profile_description(ad_text, agent):
         "is_inappropriate": true/false,
         "language": "detected language",
         "confidence": 0.0-1.0,
-        "reason": "short explanation"
+        "reason": "short explanation in maximum 10 words"
         }}
         """
 
