@@ -20,7 +20,7 @@ def initialize_agent():
 
     # "google_genai:gemini-3-flash-preview"
     # "gpt-5-mini" / "gpt-5-nano"
-    model = "gpt-5-nano"
+    model = "google_genai:gemini-3-flash-preview"
 
     print(f"Using model: {model}")
 
@@ -32,9 +32,11 @@ def moderate_profile_description(ad_text, agent):
     prompt = f"""
         Esti un moderator de continut profesionist.
 
-        Analizeaza urmatorul text al unui anunt adaugat de un mester pe o platforma de servicii si determina daca este:
+        Analizeaza urmatorul text al unui anunt adaugat de un mester pe o platforma de servicii 
+        de mesteri (reparatii, renovari, constructii) si determina daca este:
         - Gibberish (text fara sens)
-        - Spam (text care incearca sa promoveze ceva sau sa atraga atentia in mod nejustificat)
+        - Spam (text care incearca sa promoveze ceva sau sa atraga atentia in mod nejustificat, 
+        sau promoveaza servicii care nu sunt relevante pentru platforma de mesteri)
         - Inappropriate (text care contine limbaj ofensator, discriminare, sau alte elemente nepotrivite)
         - Language (limba in care este scris textul)
         - Valid (daca nu este nici gibberish, nici spam, nici inappropriate, iar limba este fie romana, maghiara, sau engleza)
