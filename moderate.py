@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 
+accepted_languages = ["romanian", "hungarian", "english"]
+
 
 def initialize_agent():
     use_databricks = False
@@ -20,7 +22,7 @@ def initialize_agent():
 
     # "google_genai:gemini-3-flash-preview"
     # "gpt-5-mini" / "gpt-5-nano"
-    model = "google_genai:gemini-3-flash-preview"
+    model = "gpt-5-mini"
 
     print(f"Using model: {model}")
 
@@ -39,18 +41,16 @@ def moderate_profile_description(ad_text, agent):
         sau promoveaza servicii care nu sunt relevante pentru platforma de mesteri)
         - Inappropriate (text care contine limbaj ofensator, discriminare, sau alte elemente nepotrivite)
         - Language (limba in care este scris textul)
-        - Valid (daca nu este nici gibberish, nici spam, nici inappropriate, iar limba este fie romana, maghiara, sau engleza)
 
         "{ad_text}"
 
         Returneaza DOAR JSON valid in acest format:
 
         {{
-        "is_valid": true/false,
         "is_gibberish": true/false,
         "is_spam": true/false,
         "is_inappropriate": true/false,
-        "language": "detected language",
+        "language": "detected language, in English, lowercase",
         "confidence": 0.0-1.0,
         "reason": "short explanation in maximum 10 words"
         }}
@@ -65,4 +65,18 @@ def moderate_profile_description(ad_text, agent):
     else:
         text = content
 
-    return json.loads(text)
+    evaluation = json.loads(text)
+
+    is_valid = (
+        not evaluation["is_gibberish"]
+        and not evaluation["is_spam"]
+        and not evaluation["is_inappropriate"]
+        and evaluation["language"] in accepted_languages
+    )
+
+    evaluation = {
+        "is_valid": is_valid,
+        **evaluation,
+    }
+
+    return evaluation
