@@ -21,8 +21,8 @@ def initialize_agent():
         load_dotenv()
 
     # "google_genai:gemini-3-flash-preview"
-    # "gpt-5-mini" / "gpt-5-nano"
-    model = "gpt-5-mini"
+    # "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
+    model = "gpt-5.4-nano"
 
     print(f"Using model: {model}")
 
