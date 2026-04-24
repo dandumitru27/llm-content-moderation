@@ -22,39 +22,22 @@ def initialize_agent():
 
     # "google_genai:gemini-3-flash-preview"
     # "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
-    model = "gpt-5.4-nano"
+    model = "google_genai:gemini-3-flash-preview"
 
     print(f"Using model: {model}")
 
     return create_agent(model)
 
 
+PROMPT_DIR = os.path.join(os.path.dirname(__file__), "prompts")
+
+
 def moderate_profile_description(ad_text, agent):
 
-    prompt = f"""
-        Esti un moderator de continut profesionist.
-
-        Analizeaza urmatorul text al unui anunt adaugat de un mester pe o platforma de servicii 
-        de mesteri (reparatii, renovari, constructii) si determina daca este:
-        - Gibberish (text fara sens)
-        - Spam (text care incearca sa promoveze ceva sau sa atraga atentia in mod nejustificat, 
-        sau promoveaza servicii care nu sunt relevante pentru platforma de mesteri)
-        - Inappropriate (text care contine limbaj ofensator, discriminare, sau alte elemente nepotrivite)
-        - Language (limba in care este scris textul)
-
-        "{ad_text}"
-
-        Returneaza DOAR JSON valid in acest format:
-
-        {{
-        "is_gibberish": true/false,
-        "is_spam": true/false,
-        "is_inappropriate": true/false,
-        "language": "detected language, in English, lowercase",
-        "confidence": 0.0-1.0,
-        "reason": "short explanation in maximum 10 words"
-        }}
-        """
+    with open(
+        os.path.join(PROMPT_DIR, "moderate_profile_description.txt"), encoding="utf-8"
+    ) as f:
+        prompt = f.read().format(ad_text=ad_text)
 
     response = agent.invoke({"messages": [{"role": "user", "content": prompt}]})
 
