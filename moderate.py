@@ -4,29 +4,28 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 
+# "google_genai:gemini-3-flash-preview"
+# "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
+MODEL = "google_genai:gemini-3-flash-preview"
+
 accepted_languages = ["romanian", "hungarian", "english"]
 
 
-def initialize_agent():
-    use_databricks = False
-
-    if use_databricks:
+def initialize_agent(dbutils=None):
+    if dbutils is not None:
         os.environ["OPENAI_API_KEY"] = dbutils.secrets.get(
             scope="MainSecretScope", key="OPENAI_API_KEY"
         )
         os.environ["GOOGLE_API_KEY"] = dbutils.secrets.get(
             scope="MainSecretScope", key="GOOGLE_API_KEY"
         )
+        print("Using Databricks secrets")
     else:
         load_dotenv()
 
-    # "google_genai:gemini-3-flash-preview"
-    # "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
-    model = "google_genai:gemini-3-flash-preview"
+    print(f"Using model: {MODEL}")
 
-    print(f"Using model: {model}")
-
-    return create_agent(model)
+    return create_agent(MODEL)
 
 
 PROMPT_DIR = os.path.join(os.path.dirname(__file__), "prompts")
