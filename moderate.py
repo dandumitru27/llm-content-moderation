@@ -4,9 +4,9 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 
-# "google_genai:gemini-3-flash-preview"
+# "google_genai:gemini-3.5-flash" / "google_genai:gemini-3-flash-preview"
 # "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
-MODEL = "google_genai:gemini-3-flash-preview"
+MODEL = "google_genai:gemini-3.5-flash"
 
 accepted_languages = ["romanian", "hungarian", "english"]
 
