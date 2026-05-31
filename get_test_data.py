@@ -35,7 +35,7 @@ def get_all_test_data():
             for description in unsupported_language_profile_descriptions:
                 test_data.append((description, "language"))
 
-    print(f"Total test data count: {len(test_data)}")
+    # print(f"Total test data count: {len(test_data)}")
 
     return test_data
 
