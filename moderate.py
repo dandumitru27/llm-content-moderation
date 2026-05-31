@@ -4,14 +4,12 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 
-# "google_genai:gemini-3.5-flash" / "google_genai:gemini-3-flash-preview"
-# "gpt-5-mini" / "gpt-5-nano" / "gpt-5.4-nano"
-MODEL = "google_genai:gemini-3.5-flash"
+from models import GEMINI_3_5_FLASH
 
 accepted_languages = ["romanian", "hungarian", "english"]
 
 
-def initialize_agent(dbutils=None):
+def initialize_agent(model=GEMINI_3_5_FLASH, dbutils=None):
     if dbutils is not None:
         os.environ["OPENAI_API_KEY"] = dbutils.secrets.get(
             scope="MainSecretScope", key="OPENAI_API_KEY"
@@ -23,9 +21,9 @@ def initialize_agent(dbutils=None):
     else:
         load_dotenv()
 
-    print(f"Using model: {MODEL}")
+    print(f"Using model: {model}")
 
-    return create_agent(MODEL)
+    return create_agent(model)
 
 
 PROMPT_DIR = os.path.join(os.path.dirname(__file__), "prompts")
