@@ -1,25 +1,16 @@
 import json
 import os
 
-from dotenv import load_dotenv
 from langchain.agents import create_agent
 
+from credentials import configure_api_keys
 from models import GEMINI_3_5_FLASH
 
 accepted_languages = ["romanian", "hungarian", "english"]
 
 
 def initialize_agent(model=GEMINI_3_5_FLASH, dbutils=None):
-    if dbutils is not None:
-        os.environ["OPENAI_API_KEY"] = dbutils.secrets.get(
-            scope="MainSecretScope", key="OPENAI_API_KEY"
-        )
-        os.environ["GOOGLE_API_KEY"] = dbutils.secrets.get(
-            scope="MainSecretScope", key="GOOGLE_API_KEY"
-        )
-        print("Using Databricks secrets")
-    else:
-        load_dotenv()
+    configure_api_keys(dbutils)
 
     print(f"Using model: {model}")
 
